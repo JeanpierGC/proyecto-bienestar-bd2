@@ -4,7 +4,9 @@ const sesion = {
     return window.acceso.leer()?.codest ?? null;
   },
 
-  nombre() {
+  // Con un estudiante, devuelve su nombre ("Apellidos, Nombres"); sin argumento, el de quien inició sesión.
+  nombre(estudiante) {
+    if (estudiante) return `${estudiante.apeest}, ${estudiante.nomest}`;
     return window.acceso.leer()?.nombre ?? "";
   },
 
