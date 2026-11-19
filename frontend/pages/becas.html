@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Becas | UDH Becas y Bienestar</title>
+  <link rel="icon" type="image/png" href="../img/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link href="../css/styles.css" rel="stylesheet">
+  <script src="../js/theme.js"></script>
+</head>
+<body data-page="becas" data-title="Becas" data-section="Becas"
+      data-description="Catálogo de becas. Desde el detalle se administran sus reglas y requisitos.">
+  <main>
+    <div class="page-actions">
+      <button id="btn-nuevo" class="btn btn-primary"><i class="bi bi-plus-lg"></i> Nueva beca</button>
+    </div>
+
+    <div class="toolbar">
+      <div class="search-box">
+        <i class="bi bi-search"></i>
+        <input id="buscador" type="search" class="form-control" placeholder="Buscar beca o tipo" aria-label="Buscar">
+      </div>
+      <span id="contador" class="count-pill"></span>
+    </div>
+
+    <div class="tbl-wrap">
+      <table id="tabla" class="table table-hover table-app">
+        <thead><tr><th>Beca</th><th>Cobertura</th><th>Reglas y requisitos</th><th>Estado</th><th>Código</th><th></th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </main>
+
+  <div class="modal fade" id="modal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <form id="formulario" class="modal-content" novalidate>
+        <div class="modal-header">
+          <span class="modal-icon"><i class="bi bi-award"></i></span>
+          <h2 id="modal-titulo" class="modal-title"></h2>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body">
+          <div id="modal-alertas"></div>
+          <div class="mb-3">
+            <label for="nombeca" class="form-label">Nombre de la beca</label>
+            <input id="nombeca" name="nombeca" class="form-control" maxlength="100" placeholder="Ej. Beca Excelencia Académica" required>
+            <div class="invalid-feedback">El nombre es obligatorio.</div>
+          </div>
+          <div class="row g-3 mb-3">
+          <div class="col-md-5">
+            <label for="tipobeca" class="form-label">Tipo</label>
+            <input id="tipobeca" name="tipobeca" class="form-control" maxlength="50" list="tipos" placeholder="Ej. Académica" required><datalist id="tipos"><option value="Académica"><option value="Económica"><option value="Deportiva"><option value="Cultural"></datalist>
+            <div class="invalid-feedback">El tipo es obligatorio.</div>
+          </div>
+          <div class="col-md-3">
+            <label for="porcbeca" class="form-label">Cobertura (%)</label>
+            <input id="porcbeca" name="porcbeca" data-type="number" type="number" min="0.01" max="100" step="0.01" class="form-control" required>
+            <div class="invalid-feedback">Entre 0.01 y 100.</div>
+          </div>
+          <div class="col-md-4">
+            <label for="estbeca" class="form-label">Estado</label>
+            <select id="estbeca" name="estbeca" class="form-select" required><option value="ACTIVA">Activa</option><option value="INACTIVA">Inactiva</option></select>
+            <div class="invalid-feedback">Elige un estado.</div>
+          </div>
+          </div>
+          <div class=" ">
+            <label for="descbeca" class="form-label">Descripción</label>
+            <textarea id="descbeca" name="descbeca" class="form-control" rows="3" maxlength="255"></textarea>
+            <div class="invalid-feedback"></div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-ghost" data-bs-dismiss="modal">Cancelar</button>
+          <button type="submit" class="btn btn-primary"><i class="bi bi-check-lg"></i> Guardar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal fade" id="modaldetalle" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <span class="modal-icon"><i class="bi bi-award"></i></span>
+          <h2 id="detalletitulo" class="modal-title"></h2>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body">
+          <div id="alertasdetalle"></div>
+          <div id="detalleinfo" class="mb-4"></div>
+
+          <h3 class="form-section-title">Requisitos que exige</h3>
+          <div id="detallerequisitos" class="mb-2"></div>
+          <button id="guardarrequisitos" type="button" class="btn btn-soft btn-sm mb-4">
+            <i class="bi bi-check-lg"></i> Guardar requisitos</button>
+
+          <h3 class="form-section-title">Reglas de postulación</h3>
+          <div id="detallereglas" class="mb-3"></div>
+          <form id="formregla" class="row g-2 align-items-start" novalidate>
+            <div class="col-md-4"><input name="nomreg" class="form-control" maxlength="100" placeholder="Nombre de la regla" aria-label="Nombre de la regla" required></div>
+            <div class="col-4 col-md-2"><select name="opreg" class="form-select" aria-label="Operador" required>
+              <option value="&gt;=">&gt;=</option><option value="&lt;=">&lt;=</option><option value="&gt;">&gt;</option><option value="&lt;">&lt;</option><option value="=">=</option></select></div>
+            <div class="col-8 col-md-3"><input name="valreg" data-type="number" type="number" step="0.01" class="form-control" placeholder="Valor" aria-label="Valor" required></div>
+            <div class="col-12 col-md-3"><button type="submit" class="btn btn-primary w-100"><i class="bi bi-plus-lg"></i> Agregar</button></div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../js/layout.js"></script>
+  <script src="../js/api.js"></script>
+  <script src="../js/ui.js"></script>
+  <script src="../js/crud.js"></script>
+  <script src="../js/becas.js"></script>
+</body>
+</html>

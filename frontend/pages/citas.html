@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Citas | UDH Becas y Bienestar</title>
+  <link rel="icon" type="image/png" href="../img/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link href="../css/styles.css" rel="stylesheet">
+  <link href="../css/flujo.css" rel="stylesheet">
+  <script src="../js/theme.js"></script>
+</head>
+<body data-page="citas" data-title="Citas" data-section="Bienestar"
+      data-description="Programa citas (el procedimiento valida que el profesional esté libre), registra la atención o cancela.">
+  <main>
+    <div class="page-actions">
+      <button id="btn-nuevo" class="btn btn-primary"><i class="bi bi-plus-lg"></i> Nueva cita</button>
+    </div>
+
+    <div class="toolbar">
+      <div class="search-box">
+        <i class="bi bi-search"></i>
+        <input id="buscador" type="search" class="form-control" placeholder="Buscar estudiante, DNI o profesional" aria-label="Buscar">
+      </div>
+      <select id="filtro-estado" class="form-select" aria-label="Filtrar por estado" style="max-width: 200px">
+        <option value="">Todos los estados</option><option value="PROGRAMADA">Programada</option><option value="ATENDIDA">Atendida</option><option value="CANCELADA">Cancelada</option><option value="NO_ASISTIO">No asistió</option>
+      </select>
+      <span id="contador" class="count-pill"></span>
+    </div>
+
+    <div class="tbl-wrap">
+      <table id="tabla" class="table table-hover table-app">
+        <thead><tr><th>Fecha</th><th>Estudiante</th><th>Profesional</th><th>Modalidad</th><th>Estado</th><th></th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </main>
+
+  <div class="modal fade" id="modal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <form id="formulario" class="modal-content" novalidate>
+        <div class="modal-header">
+          <span class="modal-icon"><i class="bi bi-calendar-plus"></i></span>
+          <h2 id="modal-titulo" class="modal-title"></h2>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body">
+          <div id="modal-alertas"></div>
+          <div class="mb-3">
+            <label for="codest" class="form-label">Estudiante</label>
+            <select id="codest" name="codest" data-type="number" class="form-select" required></select>
+            <div class="invalid-feedback">Selecciona un estudiante.</div>
+          </div>
+          <div class="mb-3">
+            <label for="codper" class="form-label">Profesional</label>
+            <select id="codper" name="codper" data-type="number" class="form-select" required></select>
+            <div class="invalid-feedback">Selecciona al profesional.</div>
+          </div>
+          <div class="row g-3 mb-3">
+          <div class="col-md-4">
+            <label for="fechcita" class="form-label">Fecha</label>
+            <input id="fechcita" name="fechcita" type="date" class="form-control" required>
+            <div class="invalid-feedback">Obligatoria.</div>
+          </div>
+          <div class="col-md-4">
+            <label for="horacita" class="form-label">Hora</label>
+            <input id="horacita" name="horacita" type="time" class="form-control" required>
+            <div class="invalid-feedback">Obligatoria.</div>
+          </div>
+          <div class="col-md-4">
+            <label for="modcita" class="form-label">Modalidad</label>
+            <select id="modcita" name="modcita" class="form-select" required><option value="PRESENCIAL">Presencial</option><option value="VIRTUAL">Virtual</option></select>
+            <div class="invalid-feedback">Elige una.</div>
+          </div>
+          </div>
+          <div class=" ">
+            <label for="motcita" class="form-label">Motivo</label>
+            <input id="motcita" name="motcita" class="form-control" maxlength="200" placeholder="Ej. Orientación académica">
+            <div class="invalid-feedback"></div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-ghost" data-bs-dismiss="modal">Cancelar</button>
+          <button type="submit" class="btn btn-primary"><i class="bi bi-check-lg"></i> Guardar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal fade" id="modalatencion" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <form id="formatencion" class="modal-content" novalidate>
+        <div class="modal-header">
+          <span class="modal-icon"><i class="bi bi-clipboard2-pulse"></i></span>
+          <h2 class="modal-title">Registrar atención</h2>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body">
+          <div id="alertasatencion"></div>
+          <p id="resumenatencion" class="text-muted"></p>
+          <div class="mb-3">
+            <label for="resumaten" class="form-label">Resumen de la atención</label>
+            <textarea id="resumaten" name="resumaten" class="form-control" rows="3" required></textarea>
+            <div class="invalid-feedback">El resumen es obligatorio.</div>
+          </div>
+          <div class="mb-3">
+            <label for="recomaten" class="form-label">Recomendaciones</label>
+            <textarea id="recomaten" name="recomaten" class="form-control" rows="2"></textarea>
+            <div class="invalid-feedback"></div>
+          </div>
+          <div class="row g-3 mb-3">
+          <div class="col-md-6">
+            <label for="nivelaten" class="form-label">Nivel de riesgo</label>
+            <select id="nivelaten" name="nivelaten" class="form-select" required><option value="BAJO">Bajo</option><option value="MEDIO">Medio</option><option value="ALTO">Alto</option><option value="CRITICO">Crítico</option></select>
+            <div class="invalid-feedback">Elige un nivel.</div>
+          </div>
+          <div class="col-md-6">
+            <label for="reqseg" class="form-label">¿Requiere seguimiento?</label>
+            <select id="reqseg" name="reqseg" class="form-select" required><option value="0">No</option><option value="1">Sí</option></select>
+            <div class="invalid-feedback">Elige una opción.</div>
+          </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-ghost" data-bs-dismiss="modal">Cancelar</button>
+          <button type="submit" class="btn btn-primary"><i class="bi bi-check-lg"></i> Registrar atención</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../js/layout.js"></script>
+  <script src="../js/api.js"></script>
+  <script src="../js/ui.js"></script>
+  <script src="../js/crud.js"></script>
+  <script src="../js/sesion.js"></script>
+  <script src="../js/citas.js"></script>
+</body>
+</html>

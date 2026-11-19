@@ -1,0 +1,13 @@
+# Entorno virtual y archivos de Python
+.venv/
+venv/
+__pycache__/
+*.pyc
+
+# Credenciales locales (cada uno crea su propio .env a partir de .env.example)
+.env
+
+# Archivos temporales
+*.log
+iniciar.bat
+aplicarpaso*.py

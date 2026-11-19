@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Panel institucional | UDH Becas y Bienestar</title>
+  <link rel="icon" type="image/png" href="img/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link href="css/styles.css" rel="stylesheet">
+  <script src="js/theme.js"></script>
+</head>
+<body data-page="inicio" data-title="Panel institucional" data-section="Administración"
+      data-description="Resumen de la universidad: estructura académica, becas y bienestar.">
+  <main>
+    <div class="page-actions">
+      <a href="pages/estudiantes.html?nuevo" class="btn btn-primary"><i class="bi bi-person-plus"></i> Nuevo estudiante</a>
+    </div>
+
+    <div class="kpi-grid">
+      <div class="card-app stat-tile">
+        <span class="stat-icon i-brand"><i class="bi bi-building"></i></span>
+        <div><div class="stat-value" data-stat="facultades">–</div><div class="stat-label">Facultades</div></div>
+      </div>
+      <div class="card-app stat-tile">
+        <span class="stat-icon i-info"><i class="bi bi-mortarboard"></i></span>
+        <div><div class="stat-value" data-stat="escuelas">–</div><div class="stat-label">Escuelas profesionales</div></div>
+      </div>
+      <div class="card-app stat-tile">
+        <span class="stat-icon i-gold"><i class="bi bi-people"></i></span>
+        <div><div class="stat-value" data-stat="estudiantes">–</div><div class="stat-label">Estudiantes</div></div>
+      </div>
+      <div class="card-app stat-tile">
+        <span class="stat-icon i-ok"><i class="bi bi-bar-chart-steps"></i></span>
+        <div><div class="stat-value" data-stat="promedio">–</div><div class="stat-label">Ciclo promedio</div></div>
+      </div>
+    </div>
+
+    <div class="kpi-grid">
+      <a class="card-app stat-tile text-reset text-decoration-none" href="pages/postulaciones.html">
+        <span class="stat-icon i-brand"><i class="bi bi-file-earmark-text"></i></span>
+        <div><div class="stat-value" data-stat="postulaciones">–</div><div class="stat-label">Postulaciones</div></div>
+      </a>
+      <a class="card-app stat-tile text-reset text-decoration-none" href="pages/becasotorgadas.html">
+        <span class="stat-icon i-ok"><i class="bi bi-patch-check"></i></span>
+        <div><div class="stat-value" data-stat="otorgadas">–</div><div class="stat-label">Becas vigentes</div></div>
+      </a>
+      <a class="card-app stat-tile text-reset text-decoration-none" href="pages/citas.html">
+        <span class="stat-icon i-info"><i class="bi bi-calendar-event"></i></span>
+        <div><div class="stat-value" data-stat="citas">–</div><div class="stat-label">Citas programadas</div></div>
+      </a>
+      <a class="card-app stat-tile text-reset text-decoration-none" href="pages/reportesbienestar.html">
+        <span class="stat-icon i-gold"><i class="bi bi-exclamation-triangle"></i></span>
+        <div><div class="stat-value" data-stat="riesgo">–</div><div class="stat-label">Casos de riesgo pendientes</div></div>
+      </a>
+    </div>
+
+    <div class="grid-2">
+      <div class="card-app">
+        <div class="card-app-header">
+          <div>
+            <h2>Estudiantes por ciclo</h2>
+            <p>Distribución del ciclo 1 al 14</p>
+          </div>
+          <div class="pill-group" role="group" aria-label="Vista">
+            <button type="button" data-vista="grafico" aria-pressed="true">Gráfico</button>
+            <button type="button" data-vista="tabla" aria-pressed="false">Tabla</button>
+          </div>
+        </div>
+        <div class="card-app-body">
+          <div id="grafico-ciclos"></div>
+          <div id="tabla-ciclos" class="d-none"></div>
+        </div>
+      </div>
+      <div class="card-app">
+        <div class="card-app-header">
+          <div>
+            <h2>Estudiantes por facultad</h2>
+            <p>Participación de cada facultad en el total</p>
+          </div>
+        </div>
+        <div class="card-app-body" id="grafico-facultades"></div>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="card-app">
+        <div class="card-app-header">
+          <div>
+            <h2>Estudiantes por escuela</h2>
+            <p>Cantidad de estudiantes en cada escuela profesional</p>
+          </div>
+        </div>
+        <div class="card-app-body" id="grafico-escuelas"></div>
+      </div>
+      <div class="card-app">
+        <div class="card-app-header">
+          <div>
+            <h2>Avance del sistema</h2>
+            <p>Módulos del proyecto</p>
+          </div>
+        </div>
+        <div class="card-app-body py-2" id="modulos"></div>
+      </div>
+    </div>
+
+    <div class="card-app">
+      <div class="card-app-header">
+        <div>
+          <h2>Últimos estudiantes registrados</h2>
+          <p>Los cinco registros más recientes</p>
+        </div>
+        <a href="pages/estudiantes.html" class="btn btn-ghost btn-sm">Ver todos</a>
+      </div>
+      <div class="card-app-body py-2" id="ultimos-estudiantes"></div>
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/layout.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/charts.js"></script>
+  <script src="js/dashboard.js"></script>
+</body>
+</html>
